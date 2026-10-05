@@ -11,7 +11,15 @@
     <h1>cmd-typing</h1>
     <p id="prompt" data-testid="prompt"></p>
     <input id="answer" data-testid="answer" autocomplete="off" spellcheck="false" />
-    <p>スコア: <span id="score" data-testid="score">0</span></p>
+    <p>
+      スコア: <span id="score" data-testid="score">0</span>
+      ／ コンボ: <span id="combo" data-testid="combo">0</span>
+      ／ 残り: <span id="time" data-testid="time">60</span>秒
+    </p>
+    <div id="result" data-testid="result" hidden>
+      <p id="result-text"></p>
+      <button id="retry" data-testid="retry">もう一度</button>
+    </div>
   </main>
   <script type="module" src="/src/main.ts"></script>
 </body>
