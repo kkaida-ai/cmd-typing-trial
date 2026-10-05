@@ -1,4 +1,5 @@
 import { WORDS } from "./words";
+import { format, record } from "./ranking";
 import { current, isOver, remainingSeconds, start, submit } from "./game";
 
 const prompt = document.querySelector<HTMLParagraphElement>("#prompt")!;
@@ -8,6 +9,7 @@ const time = document.querySelector<HTMLSpanElement>("#time")!;
 const combo = document.querySelector<HTMLSpanElement>("#combo")!;
 const result = document.querySelector<HTMLDivElement>("#result")!;
 const resultText = document.querySelector<HTMLParagraphElement>("#result-text")!;
+const ranking = document.querySelector<HTMLOListElement>("#ranking")!;
 const retry = document.querySelector<HTMLButtonElement>("#retry")!;
 
 let state = start();
@@ -32,6 +34,14 @@ function finish() {
   clearInterval(timer);
   answer.disabled = true;
   resultText.textContent = `終了！ スコア ${state.score} / 最大コンボ ${state.maxCombo}`;
+  // 「順位. スコア」を自前で書くので、ol の番号は出さない
+  ranking.replaceChildren(
+    ...format(record(localStorage, state.score, Date.now())).map((line) => {
+      const li = document.createElement("li");
+      li.textContent = line;
+      return li;
+    }),
+  );
   result.hidden = false;
   retry.focus();
 }
