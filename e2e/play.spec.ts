@@ -55,3 +55,16 @@ test("「もう一度」でスコアと時間がリセットされる", async ({
   await expect(page.getByTestId("answer")).toBeEnabled();
   await expect(page.getByTestId("result")).toBeHidden();
 });
+
+test("2回プレイすると、結果画面のランキングに2件表示される", async ({ page }) => {
+  await page.clock.install();
+  await page.goto("/");
+  await typeCurrent(page);
+  await page.clock.runFor(60_000);
+  await expect(page.getByTestId("ranking").locator("li")).toHaveText(["1. 1"]);
+
+  await page.getByTestId("retry").click();
+  await page.getByTestId("answer").pressSequentially("x");
+  await page.clock.runFor(60_000);
+  await expect(page.getByTestId("ranking").locator("li")).toHaveText(["1. 1", "2. 0"]);
+});
